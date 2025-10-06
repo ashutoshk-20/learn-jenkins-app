@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment{
+        NETLIFY_SITE_ID = '74d8dbb2-1f7a-47ee-9cc4-ba720dfadedd'
+    }
+
     stages {
         stage('Build') {
             agent{
@@ -58,7 +62,7 @@ pipeline {
 
                     post {
                         always{
-                            pubishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir:'playwright-report', reportFiles:'index.html', reportName: 'Playwright Test Report'])
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir:'playwright-report', reportFiles:'index.html', reportName: 'Playwright Test Report'])
                         }
                     }
 
@@ -77,6 +81,7 @@ pipeline {
                 sh '''
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
+                    echo "Deploying to production site ID. $NETLIFY_SITE_ID
 
                 '''
             }
